@@ -1,0 +1,81 @@
+'''
+描述
+大家都知道斐波那契数列，现在要求输入一个正整数 ，请你输出斐波那契数列的第  项。
+斐波那契数列是一个满足 fib(x)=\left\{ \begin{array}{rcl} 1 & {x=1,2}\\ fib(x-1)+fib(x-2) &{x>2}\\ \end{array} \right.fib(x)={ 
+1
+fib(x−1)+fib(x−2)
+  
+x=1,2
+x>2
+的数列
+数据范围：n\leq 39n≤39
+要求：空间复杂度O(1) ，时间复杂度O(n) ，本题也有时间复杂度O(logn) 的解法
+
+输入描述：
+一个正整数n
+返回值描述：
+输出一个正整数。
+'''
+
+# -*- coding:utf-8 -*-
+class Solution:
+    '''
+     O(logn)解法：由f(n) = f(n-1) + f(n-2)，可以知道
+     * [f(n),f(n-1)] = [f(n-1),f(n-2)] * {[1,1],[1,0]}
+     * 所以最后化简为:[f(n),f(n-1)] = [1,1] * {[1,1],[1,0]}^(n-2)
+     * 所以这里的核心是：
+     * 1.矩阵的乘法
+     * 2.矩阵快速幂（因为如果不用快速幂的算法，时间复杂度也只能达到O(N)）
+    '''
+    def Fibonacci(self, n):
+        if (n==0): 
+            return 0
+        if (n == 1 or n==2): 
+                return 1
+        n = n-2
+        base = [[1,1],[1,0]]
+        ans = [[1,0],[0,1]]
+        while n:
+            if n&1:
+                ans = mul(base,ans)
+            base = mul(base,base)
+            n = n>>1
+        return ans[0][0]+ans[0][1]
+          
+        '''
+        递归，不考虑，有大量的重复计算，会导致内存溢出
+        循环，时间复杂度O(n)，空间复杂度O(1)
+        '''
+#         if n== 0:
+#             return 0
+#         if n == 1 or n == 2:
+#             return 1
+#         f1 = 1
+#         f2 = 1
+#         for i in range(3,n+1):
+#             tmp = f1+f2
+#             f1 = f2
+#             f2 = tmp
+#         return f2
+              
+        
+def mul(A,B):
+        # A:m*n, B:n*p  结果m*p
+        m = len(A)
+        n1 = len(A[0])
+        n2 = len(B)
+        p = len(B[0])
+        if n1 !=n2:
+            return
+        n = n1= n2
+        ans = []
+         # 初始化ans
+        for i in range(m):
+            ans.append([0]*p) # 都用同一个变量row = [0]*p，会同时修改，所以不用同一个变量
+        for i in range(m):
+            for j in range(p):
+                temp = 0
+                for q in range(n):
+                    temp += A[i][q]*B[q][j]
+                ans[i][j] = temp
+        return ans        # write code here
