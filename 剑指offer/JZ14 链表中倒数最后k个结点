@@ -1,0 +1,44 @@
+描述
+输入一个长度为的链表，设链表中的元素的值为a_ia 
+i输出一个链表，该输出链表包含原链表中从倒数第k个结点至尾节点的全部节点。
+如果该链表长度小于k，请返回一个长度为 0 的链表。
+
+
+
+# 解题思路一：正向遍历链表的l-k个位置就返回剩余部分链表
+class Solution:
+    def FindKthToTail(self , pHead , k ):
+#         listNode =ListNode()
+        l = 0
+        p = pHead
+        while(pHead):
+            l += 1
+            pHead = pHead.next
+        if l< k or p is None:
+            return 
+        k = l-k
+        while(p and k):
+            k -= 1
+            p = p.next
+        return p
+        
+        
+ # 解题思路二：使用快慢指针
+# 设置两个“指针”，一个快指针fast，一个慢指针slow，初始时两个指针都指向头节点
+# 让快指针fast先向前走K步，慢指针slow不动。如果快指针走的过程中自己变成null了，说明链表的长度小于K，直接返回null即可。
+# 然后快指针和慢指针同时向前移动。等fast为null的时候，两个指针都往前走了（链表长度－K）步，停止移动。此时慢指针slow所在的位置就是链表中倒数第K个位置。直接返回slow即可
+class Solution:
+    def FindKthToTail(self , pHead , k ):
+        if pHead is None or k < 0:
+            return 
+        p = pHead
+        q = pHead
+        while p and k:
+            k -= 1
+            p = p.next
+        if k:   #表示链表长度小于k
+            return 
+        while(p):
+            p = p.next  #快指针
+            q = q.next  #慢指针
+        return q
