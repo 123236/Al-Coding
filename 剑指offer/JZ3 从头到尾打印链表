@@ -1,0 +1,36 @@
+# 解题思路一：遍历链表时将数据存入列表，但将列表的逆序进行返回
+class Solution:
+    # 返回从尾部到头部的列表值序列，例如[1,2,3]
+    def printListFromTailToHead(self, listNode):
+        res = []
+        while(listNode):
+            res.append(listNode.val)
+            if listNode.next:
+                listNode = listNode.next
+            else:
+                break
+        return res[::-1]
+        
+  # 解题思路二：利用栈的先入后出原理
+class Solution:
+    # 返回从尾部到头部的列表值序列，例如[1,2,3]
+    def printListFromTailToHead(self, listNode):
+        res = []
+        result = []
+        while(listNode):
+            res.append(listNode.val)
+            if listNode.next:
+                listNode = listNode.next
+            else:
+                break
+        while res:
+            result.append(res.pop(-1))
+        return result
+    
+ # 解题思路三：递归
+class Solution:
+    # 返回从尾部到头部的列表值序列，例如[1,2,3]
+    def printListFromTailToHead(self, listNode):
+        if listNode is None :
+            return []
+        return self.printListFromTailToHead(listNode.next) + [listNode.val]
