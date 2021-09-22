@@ -1,0 +1,64 @@
+
+描述
+输入两个无环的单向链表，找出它们的第一个公共结点，如果没有公共节点则返回空。
+（注意因为传入数据是链表，所以错误测试数据的提示是用其他方式显示的，保证传入数据是正确的）
+
+数据范围： n <= 1000
+要求：空间复杂度O(1) ，时间复杂度O(n) 
+
+
+# 解题思路：用两层循环，一一比较
+
+def FindFirstCommonNode(pHead1 , pHead2 ):
+    print("pHead1:")
+    printlist(pHead1)
+    print()
+    print("pHead2:")
+    printlist(pHead2)
+    p2 = pHead2
+    p = ListNode(0)
+    res = p
+    while pHead1:
+        p2 = pHead2
+#         print(p2.val)
+        while p2:
+            if pHead1.val != p2.val:
+                p2 = p2.next
+            else:
+#                 tmp = p2.next
+                res.next = p2
+#                 print(res.val,end='&&&&')
+                res = res.next
+#                 res.next = None
+#                 p2 = tmp
+                break
+        pHead1 = pHead1.next
+    res.next = None
+    print("\n")
+    return p.next
+    
+    
+   # 解题思路：两个链表从小到大排列，并且相同的都最后面，只要找到第一个相同的，直接返回剩下的就可以
+class Solution(object):
+    def getIntersectionNode(self, pHead1, pHead2):
+        p1, n_p1 = pHead1, 0
+        p2, n_p2 = pHead2, 0
+        while p1:
+            p1 = p1.next
+            n_p1 += 1
+        while p2:
+            p2 = p2.next
+            n_p2 += 1
+        if n_p1 < n_p2:     # p1指向长链
+            pHead1, pHead2 = pHead2, pHead1
+            n_p1, n_p2 = n_p2, n_p1
+
+        for _ in range(n_p1 - n_p2):
+            pHead1 = pHead1.next
+        while pHead1 and pHead2:
+            if pHead1 == pHead2:
+                return pHead1
+            else:
+                pHead1 = pHead1.next
+                pHead2 = pHead2.next
+        return None 
