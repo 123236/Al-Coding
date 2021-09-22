@@ -1,0 +1,65 @@
+描述
+在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留，返回链表头指针。 
+例如，链表1->2->3->3->4->4->5 处理后为 1->2->5
+
+
+# 解题思路：先删除两个相同的后面那个节点，
+# 当cur和next不同，但标志量flag==1则将当前节点删除
+class Solution:
+    def deleteDuplication(self, pHead):
+        if pHead is None:
+            return None
+        p = ListNode(0)
+        pre = p
+        pre.next = pHead
+        cur = pHead
+        nxt = pHead.next
+        flag = 0
+        while cur and nxt:
+            if nxt.val == cur.val:
+                flag = 1
+                cur.next = nxt.next
+                nxt = nxt.next
+            else:
+                if flag == 1:
+                    flag = 0
+                    pre.next = cur.next
+                    cur = cur.next
+                    nxt = nxt.next
+                else:
+                    pre = cur
+                    cur = cur.next
+                    nxt = nxt.next
+        if cur.next is None and flag == 1:
+            pre.next = None
+#             return p.next
+#             cur = cur.next
+#             nxt = nxt.next         
+                    
+        return p.next
+
+
+# 解题思路：用while循环来查找连续相同的数字，省去了标志量
+# 代码更简洁
+class Solution:
+    def deleteDuplication(self, pHead):
+        # write code here
+        head = ListNode(0)
+        head.next = pHead
+        pre = head
+        p = head.next
+        while p and p.next:
+            if p.next.val == p.val:
+                while p.next and p.next.val == p.val:
+                    p.next = p.next.next
+                pre.next = p.next
+                p = pre.next
+            else:
+                pre = p
+                p = p.next
+        return head.next
+
+
+
+
+
